@@ -11,41 +11,41 @@ public class Game {
 	private static final Random RANDOM_SEED = new Random();	
 	private int height;
 	private int width;
+
+	public Canon canon;
+	public Tir tir;
 	private SnakeObservable snake;
 	private List<Fraise> fraises;
 
 	private List<Bois> bois;
 	private List<Myrtille> myrtilles;
-	private int timer, temp;
+
+	private List<Piece> pieces;
+
+	private Piece piece;
+	private int timer;
+	private final int temp = 35;
 		
 	public Game(int width, int height, Coordinate c) {
 		this.height = height;
 		this.width = width;
 		snake = new SnakeObservable(this, c);
 		bois = new ArrayList<>();
-		for (int i = 0; i < 8; i++) {
-			int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
-			int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
-			Coordinate position = new Coordinate(x, y);
-			bois.add(new Bois(position));
-		}
+		addBois();
 		fraises = new ArrayList<>();
-		for (int i = 0; i < 8; i++) {
-			int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
-			int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
-			Coordinate position = new Coordinate(x, y);
-			fraises.add(new Fraise(position));
-		}
+		addFraise();
 		myrtilles = new ArrayList<>();
-		for (int i = 0; i < 4; i++) {
-			int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
-			int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
-			Coordinate position = new Coordinate(x, y);
-			myrtilles.add(new Myrtille(position));
-		}
-		//addFraise();
+		addMyrtille();
+		int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
+		int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
+		Coordinate position = new Coordinate(x, y);
+		piece = new Piece(position);
+		pieces = new ArrayList<>();
+		pieces.add(piece);
+		canon = new Canon();
+		tir = new Tir();
 		timer = 0;		
-	}	
+	}
 
 	public SnakeObservable getSnake() {
 		return snake;
@@ -100,6 +100,9 @@ public class Game {
 		fraises.removeIf(fraise -> !fraise.isAlive());
 		for (Fraise fraise : fraises) {
 			fraise.step(snake);
+			if (!fraise.isAlive()){
+
+			}
 		}
 		bois.removeIf(bois -> !bois.isAlive());
 		for (Bois bois1 : bois) {
@@ -110,27 +113,57 @@ public class Game {
 			myrtille.step(snake);
 		}
 		myrtilles.removeIf(myrtille -> !myrtille.isAlive());
+
 		if(timer >= INV_PERIOD) {
 			snake.setInvinsible(false);
-			timer = 0;			
+			timer = 0;
 		}
-		System.out.println(timer);
+		piece.step(this, snake);
+		pieces.removeIf(piece1 -> !piece1.isAlive());
+
 	}
 
-	private void addFraise() {
-		int x = RANDOM_SEED.nextInt(getHeight());
-		int y = RANDOM_SEED.nextInt(getWidth());
-		Coordinate position = new Coordinate(x, y);
-		fraises.add(new Fraise(position));
+	public void addFraise(){
+		for (int i = 0; i < 8; i++) {
+			int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
+			int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
+			Coordinate position = new Coordinate(x, y);
+			fraises.add(new Fraise(position));
+		}
+	}
+
+	public void addBois(){
+		for (int i = 0; i < 8; i++) {
+			int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
+			int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
+			Coordinate position = new Coordinate(x, y);
+			bois.add(new Bois(position));
+		}
+	}
+
+	public void addMyrtille() {
+		for (int i = 0; i < 4; i++) {
+			int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
+			int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
+			Coordinate position = new Coordinate(x, y);
+			myrtilles.add(new Myrtille(position));
+		}
 	}
 
 	public Stream<Fraise> getFraise() {
 		return fraises.stream();
 	}
 
-	private void addBois() {
-		int x = RANDOM_SEED.nextInt(getHeight());
-		int y = RANDOM_SEED.nextInt(getWidth());
+	public Stream<Piece> getPiece() {
+		return pieces.stream();
+	}
+
+	public void clean(){
+		fraises = new ArrayList<>();
+		bois = new ArrayList<>();
+		myrtilles = new ArrayList<>();
+		int x = RANDOM_SEED.nextInt(((getHeight()-5) - 1) + 1);
+		int y = RANDOM_SEED.nextInt(((getWidth()-10) - 1) + 1);
 		Coordinate position = new Coordinate(x, y);
 		bois.add(new Bois(position));
 	}
@@ -142,6 +175,7 @@ public class Game {
 	public Stream<Myrtille> getMyrtille(){
 		return myrtilles.stream();
 	}
+
 
 	public int getTimer() {
 		return timer;

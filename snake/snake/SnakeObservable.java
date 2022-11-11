@@ -68,5 +68,7 @@ public class SnakeObservable implements ISnake{
 	@Override
 	public void setInvinsible(boolean invinsible) {snake.setInvinsible(invinsible);}
 
+	public void tirtoucheSerpent(Tir tir) {snake.tirtoucheSerpent(tir);}
+
 
 }

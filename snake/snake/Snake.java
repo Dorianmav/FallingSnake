@@ -19,6 +19,8 @@ public class Snake implements ISnake {
 	private Direction direction;
 	private boolean alive;
 
+
+
 	private boolean invinsible;
 
 	public Snake(Game game, Coordinate start) {
@@ -88,8 +90,15 @@ public class Snake implements ISnake {
 		body.remove(0);
 	}
 
-
-
+	public void tirtoucheSerpent(Tir tir) {
+		for(int i = 0; i < body.size()-1; i++) {
+			if(tir.detruitSerp(this) == true) {
+				tir.posY = -1; // on tue le tir
+				body.remove(0);
+				break;
+			}
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see snake.ISnake#isAlive()
