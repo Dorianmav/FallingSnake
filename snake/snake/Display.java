@@ -68,5 +68,11 @@ public class Display extends JComponent {
             g.drawString("GAME OVER!", 60, 50);
             frame.removeAll();
         }
+
+        if (snake.getBody().size() == 0){
+            g.setFont(afficheTexte);
+            g.drawString("Victoire", 60, 50);
+            frame.removeAll();
+        }
     }
 }

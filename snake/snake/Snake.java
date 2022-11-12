@@ -84,19 +84,18 @@ public class Snake implements ISnake {
 
 	@Override
 	public void move() {
-		Coordinate current = body.get(body.size() - 1);
-		Coordinate next = new Coordinate(current.getX() + direction.getX(), current.getY() + direction.getY());
-		body.add(next);
-		body.remove(0);
+		if (body.size() >= 1) {
+			Coordinate current = body.get(body.size() - 1);
+			Coordinate next = new Coordinate(current.getX() + direction.getX(), current.getY() + direction.getY());
+			body.add(next);
+			body.remove(0);
+		}
 	}
 
 	public void tirtoucheSerpent(Tir tir) {
-		for(int i = 0; i < body.size()-1; i++) {
-			if(tir.detruitSerp(this) == true) {
-				tir.posY = -1; // on tue le tir
-				body.remove(0);
-				break;
-			}
+		if(tir.detruitSerp(this) == true) {
+			tir.posY = -1; // on tue le tir
+			body.remove(0);
 		}
 	}
 

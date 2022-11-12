@@ -26,7 +26,10 @@ public interface ISnake {
 	
 	default public Coordinate getHead() {
 		var body = getBody();
-		return body.get(body.size()-1);
+		if (body.size() >= 1) {
+			return body.get(body.size()-1);
+		}
+		return new Coordinate(0,0);
 	}
 
 }

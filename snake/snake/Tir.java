@@ -54,30 +54,19 @@ public class Tir extends Entite {
 	
 	public boolean detruitSerp(Snake Serp) {
 		boolean reponse = false;
-		if(!Serp.isInvinsible()) {
-			if(Serp.getBody().size() == 1
-				&& ((this.posY/10 == Serp.getHead().getY() 
-				||this.posY/10 == Serp.getHead().getY() - 1
-				||this.posY/10 == Serp.getHead().getY() + 1) 
-				&& (this.posX /10 == Serp.getHead().getX() 
-				||this.posX /10 == Serp.getHead().getX() - 1 
-				||this.posX /10 == Serp.getHead().getX() + 1))) {
-					reponse = true;
-			}
-		else {reponse = false;}
-		}
 		for(int i = 0; i<Serp.getBody().size(); i++) {
-			if(!Serp.isInvinsible()) {
+			if(!Serp.isInvinsible())
+			{
 				if((this.posY/10 == Serp.getBody().get(i).getY() 
 						||this.posY/10 == Serp.getBody().get(i).getY() - 1
 						||this.posY/10 == Serp.getBody().get(i).getY() + 1) 
 						&& (this.posX /10 == Serp.getBody().get(i).getX() 
 						||this.posX /10 == Serp.getBody().get(i).getX() - 1 
-						||this.posX /10 == Serp.getBody().get(i).getX() + 1)) {
+						||this.posX /10 == Serp.getBody().get(i).getX() + 1))
+				{
 					reponse = true;
 					break;
-				
-			}
+				}
 				else {reponse = false;}
 		
 				if((this.posY/10 == Serp.getHead().getY() 
@@ -85,17 +74,18 @@ public class Tir extends Entite {
 						||this.posY/10 == Serp.getHead().getY() + 1) 
 						&& (this.posX /10 == Serp.getHead().getX() 
 						||this.posX /10 == Serp.getHead().getX() - 1 
-						||this.posX /10 == Serp.getHead().getX() + 1)) {
+						||this.posX /10 == Serp.getHead().getX() + 1))
+				{
 					reponse = true;
 					break;
-					}
-				else {reponse = false;}
-		
-		
+				}
+				else {
+					reponse = false;
+				}
+			}
 		}
+		return reponse;
 	}
-	return reponse;
-}
 	
 	public boolean step(ISnake snake) {
 		if(snake.getBody().equals(position)) {
